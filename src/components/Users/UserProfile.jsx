@@ -30,7 +30,7 @@ function UserProfile() {
             <p>Bio</p>
             <p>Join Date</p>
             <div className="profile-posts">
-              <Posts user={user} />
+              <Posts class="profile-posts" user={user} />
             </div>
           </div>
         )}

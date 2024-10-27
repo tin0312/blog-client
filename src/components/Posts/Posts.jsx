@@ -34,7 +34,7 @@ function Posts(props) {
   }, [props.user, serverURL]);
 
   return (
-    <div className="posts-wrapper">
+    <div className={props.user ? "profile-posts" : "posts-wrapper"}>
       <div className="posts-container">
         {info === "" ? (
           posts.map((post) => (
