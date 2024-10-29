@@ -615,6 +615,19 @@ a {
   padding: 2rem;
   text-align: center;
 }
+.reactions-container {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.reactions-container li {
+  list-style: none;
+  font-weight: 700;
+}
+.reactions-container li:hover {
+  color: white;
+  cursor: pointer;
+}
 .nav-link {
   border: 0 solid transparent;
 }

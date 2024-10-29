@@ -1,6 +1,7 @@
 import React from "react";
 import convertTimestamp from "../../helpers/convertTimestamp";
 import { useNavigate, useLocation } from "react-router-dom";
+import PostReactions from "../UI/PostReactions";
 
 function Post(props) {
   const { state } = useLocation();
@@ -88,6 +89,7 @@ function Post(props) {
           </button>
         </div>
       )}
+      <PostReactions postId={props.id} />
     </div>
   );
 }
