@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-function PostReactions({ postId }) {
-  const [likeCount, setLikeCount] = useState(0);
-  const [helpfulCount, setHelpfulCount] = useState(0);
-  const [brilliantCount, setBrilliantCount] = useState(0);
+function PostReactions({ postId, likeCount, helpfulCount, brilliantCount }) {
+  const [likeCtn, setLikeCtn] = useState(0);
+  const [helpfulCtn, setHelpfulCtn] = useState(0);
+  const [brilliantCtn, setBrilliantCtn] = useState(0);
   const [activeReaction, setActiveReaction] = useState({
     like: false,
     helpful: false,
     brilliant: false,
   });
+
+  useEffect(() => {
+    setLikeCtn(likeCount);
+    setHelpfulCtn(helpfulCount);
+    setBrilliantCtn(brilliantCount);
+  }, [likeCount, helpfulCount, brilliantCount]);
 
   function handleReactionCount(reactionType) {
     setActiveReaction((prevActiveState) => ({
@@ -16,27 +22,24 @@ function PostReactions({ postId }) {
       [reactionType]: !prevActiveState[reactionType],
     }));
     if (reactionType === "like") {
-      setLikeCount((prevCount) =>
+      setLikeCtn((prevCount) =>
         activeReaction.like ? prevCount - 1 : prevCount + 1
       );
-      console.log(activeReaction);
     } else if (reactionType === "helpful") {
-      setHelpfulCount((prevCount) =>
+      setHelpfulCtn((prevCount) =>
         activeReaction.helpful ? prevCount - 1 : prevCount + 1
       );
-      console.log(activeReaction);
     } else {
-      setBrilliantCount((prevCount) =>
+      setBrilliantCtn((prevCount) =>
         activeReaction.brilliant ? prevCount - 1 : prevCount + 1
       );
-      console.log(activeReaction);
     }
   }
-  // save reaction count to the database
+
   useEffect(() => {
     async function updateReaction() {
       try {
-        const response = await fetch(
+        await fetch(
           `${process.env.REACT_APP_BACKEND_URL}/posts/${postId}/add-reaction`,
           {
             method: "PATCH",
@@ -44,9 +47,9 @@ function PostReactions({ postId }) {
               "Content-Type": "application/json; charset=UTF-8",
             },
             body: JSON.stringify({
-              likeCount,
-              helpfulCount,
-              brilliantCount,
+              likeCount: likeCtn,
+              helpfulCount: helpfulCtn,
+              brilliantCount: brilliantCtn,
             }),
           }
         );
@@ -55,7 +58,7 @@ function PostReactions({ postId }) {
       }
     }
     updateReaction();
-  }, [likeCount, helpfulCount, brilliantCount]);
+  }, [likeCtn, helpfulCtn, brilliantCtn]);
 
   return (
     <div>
@@ -64,19 +67,19 @@ function PostReactions({ postId }) {
           style={activeReaction.like ? { color: "white" } : null}
           onClick={() => handleReactionCount("like")}
         >
-          ({likeCount}) Like
+          ({likeCtn}) Like
         </li>
         <li
           style={activeReaction.helpful ? { color: "white" } : null}
           onClick={() => handleReactionCount("helpful")}
         >
-          ({helpfulCount}) Helpful
+          ({helpfulCtn}) Helpful
         </li>
         <li
           style={activeReaction.brilliant ? { color: "white" } : null}
           onClick={() => handleReactionCount("brilliant")}
         >
-          ({brilliantCount}) Brilliant
+          ({brilliantCtn}) Brilliant
         </li>
       </ul>
     </div>

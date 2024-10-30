@@ -89,7 +89,12 @@ function Post(props) {
           </button>
         </div>
       )}
-      <PostReactions postId={props.id} />
+      <PostReactions
+        postId={props.id}
+        helpfulCount={props.helpfulCount}
+        likeCount={props.likeCount}
+        brilliantCount={props.brilliantCount}
+      />
     </div>
   );
 }

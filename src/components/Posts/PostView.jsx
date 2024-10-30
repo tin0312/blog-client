@@ -39,6 +39,9 @@ function PostView() {
         updatedAt={post?.updated_at}
         profileFile={post?.profile_pic_file}
         profileUrl={post?.profile_pic_url}
+        likeCount={post?.likecount}
+        helpfulCount={post?.helpfulcount}
+        brilliantCount={post?.brilliantcount}
         className="post"
       />
     </div>
