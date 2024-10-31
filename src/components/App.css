@@ -615,6 +615,19 @@ a {
   padding: 2rem;
   text-align: center;
 }
+.reactions-container {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.reactions-container li {
+  list-style: none;
+  font-weight: 700;
+}
+.reactions-container li:hover {
+  color: white;
+  cursor: pointer;
+}
 .nav-link {
   border: 0 solid transparent;
 }
@@ -659,7 +672,6 @@ a {
   align-items: center;
   margin: 18rem auto;
 }
-
 @media only screen and (max-width: 480px) {
   .posts-wrapper,
   .form-wrapper,
@@ -792,10 +804,11 @@ a {
   height: 40px;
 }
 .user-icon:hover,
-.logout-icon {
+.logout-icon:hover,
+.notification-icon:hover {
   cursor: pointer;
   transform: scale(1.4);
-  transition: all 0.5s ease-in;
+  transition: all 0.3s ease-in;
 }
 
 .google-signin-container {
@@ -822,7 +835,8 @@ a {
 }
 
 /* user drop-down */
-.user-container {
+.user-container,
+.notification-container {
   position: relative;
 }
 .user-drop-down {
