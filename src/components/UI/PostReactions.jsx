@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../../hooks/AuthProvider";
 
 function PostReactions({ postId, likeCount, helpfulCount, brilliantCount }) {
+  const { user } = useAuth();
   const [likeCtn, setLikeCtn] = useState(0);
   const [helpfulCtn, setHelpfulCtn] = useState(0);
   const [brilliantCtn, setBrilliantCtn] = useState(0);
-  const [activeReaction, setActiveReaction] = useState({
-    like: false,
-    helpful: false,
-    brilliant: false,
-  });
+  const [activeReaction, setActiveReaction] = useState({});
 
   useEffect(() => {
     setLikeCtn(likeCount);
@@ -17,22 +15,28 @@ function PostReactions({ postId, likeCount, helpfulCount, brilliantCount }) {
   }, [likeCount, helpfulCount, brilliantCount]);
 
   function handleReactionCount(reactionType) {
-    setActiveReaction((prevActiveState) => ({
-      ...prevActiveState,
-      [reactionType]: !prevActiveState[reactionType],
-    }));
-    if (reactionType === "like") {
-      setLikeCtn((prevCount) =>
-        activeReaction.like ? prevCount - 1 : prevCount + 1
-      );
-    } else if (reactionType === "helpful") {
-      setHelpfulCtn((prevCount) =>
-        activeReaction.helpful ? prevCount - 1 : prevCount + 1
-      );
-    } else {
-      setBrilliantCtn((prevCount) =>
-        activeReaction.brilliant ? prevCount - 1 : prevCount + 1
-      );
+    if (user) {
+      setActiveReaction((prevActiveState) => {
+        const newActiveReaction = {
+          ...prevActiveState,
+          [reactionType]: !prevActiveState[reactionType],
+        };
+        localStorage.setItem(user?.username, JSON.stringify(newActiveReaction));
+        return newActiveReaction;
+      });
+      if (reactionType === "like") {
+        setLikeCtn((prevCount) =>
+          activeReaction.like ? prevCount - 1 : prevCount + 1
+        );
+      } else if (reactionType === "helpful") {
+        setHelpfulCtn((prevCount) =>
+          activeReaction.helpful ? prevCount - 1 : prevCount + 1
+        );
+      } else {
+        setBrilliantCtn((prevCount) =>
+          activeReaction.brilliant ? prevCount - 1 : prevCount + 1
+        );
+      }
     }
   }
 
@@ -59,6 +63,23 @@ function PostReactions({ postId, likeCount, helpfulCount, brilliantCount }) {
     }
     updateReaction();
   }, [likeCtn, helpfulCtn, brilliantCtn]);
+
+  useEffect(() => {
+    if (user) {
+      const savedActiveReaction = JSON.parse(
+        localStorage.getItem(user.username)
+      );
+      if (savedActiveReaction) {
+        setActiveReaction(savedActiveReaction);
+      } else {
+        setActiveReaction({
+          like: false,
+          helpful: false,
+          brilliant: false,
+        });
+      }
+    }
+  }, [user]);
 
   return (
     <div>
